@@ -1,5 +1,18 @@
 @charset "utf-8";
-/* CSS Document */
+/* MovieDraft.Net main CSS */
+/* We try to keep selectors listed in the order in which they appear on the index page. */
+/* Selectors are also separated into Elements, Classes, and IDs (least to most specific). */
+/* Within a selector, we keep attributes listed in alphabetical order, with sub-attributes grouped together. */
+/* Elements */
+
+strong {
+	font-size: 1.2em;
+	font-weight: bold;	
+}
+
+/* Classes */
+
+/* IDs */
 
 #md_entry_wrap {
 	margin: 5px;

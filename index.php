@@ -3,8 +3,8 @@
 /* UTILITY FUNCTIONS */
 function ListPrices() {
 	$outtxt = ""; // Initialize the string
-	for($i=0;$i<=20;$i++){ // Start at 0; keep going as long as $i is $20 or less; add 1 to $i with each step
-		$outtxt .= "<option value='$i'>$$i</option>\n"; // Append to string; variable values are added automatically; \n is line break
+	for($i=0;$i<=18;$i++){ // Start at 0; keep going as long as $i is $20 or less; add 1 to $i with each step
+		$outtxt .= "<option value='$i'>$i</option>\n"; // Append to string; variable values are added automatically; \n is line break
 	}
 	return $outtxt; // Send string to whatever called the function
 	// We're returning the string instead of echoing it directly to keep the function flexible.
@@ -44,9 +44,12 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 <link rel="stylesheet" href="reset.css" />
 <!-- This is our main CSS file. Kept external so that if we want to just change the design, we don't have to re-upload the whole page. -->
 <link rel="stylesheet" href="main.css" />
+
+<!-- This is jQuery, a Javascript library that makes a lot of things a lot easier (see jquery.com). We load it first so our custom Javascript can take advantage of it, even though it's in a separate file. The 'min' means that it's 'minified' - short variable and function names, minimal whitespace, etc. - to make it smaller and more efficient, but WAY less readable. -->
+<script type="text/javascript" src="jquery-1.10.2.min.js"></script>
 <!-- This is our main Javascript file. Kept external for the same reason as the CSS. -->
-<!-- Note the </script>. Ideally, the HTML definition would overload the <script> tag, so we'd have two versions: one that's a singleton (<script />) and one that has content (<script></script>). But they don't. <script> is always treated as a content-bearing tag, so you have to close it explicitly even when you're just loading an external script. On the plus side, this means you can put "spare" Javascript straight into the same <script> tag and not add extra overhead - for example, if you're loading someone else's script and don't want to modify it directly. -->
 <script type="text/javascript" src="main.js"></script>
+<!-- Note the </script> closing tags. Ideally, the HTML definition would overload the <script> tag, so we'd have two versions: one that's a singleton (<script />) and one that has content (<script></script>). But they don't. <script> is always treated as a content-bearing tag, so you have to close it explicitly even when you're just loading an external script. On the plus side, this means you can put "spare" Javascript straight into the same <script> tag and not add extra overhead - for example, if you're loading someone else's script and don't want to modify it directly. -->
 <title>MovieDraft.Net Sign-Up Sheet</title>
 </head>
 
@@ -54,8 +57,9 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 
 <!-- Collect the actual data -->
 <div id="md_entry_wrap">
+	<!-- When a <form>'s action attribute is blank, that means it loads the same page again for processing. -->
     <form id="md_entry" name="md_entry" action="" method="POST">
-        <!-- we are currently performing no sanity checks on names -->
+        <!-- We are currently performing no sanity checks on names. -->
         <label form="md_entry" for="md_entry_name"><strong>Name:</strong></label> <input type="text" name="md_entry_name" id="md_entry_name" value="" size="20"><br>
         <br>
         <strong>Buy-ins:</strong><br>
@@ -65,7 +69,7 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 		$j = 0;
 		foreach($movies as $movie) {
 			echo "<tr><td><label form='md_entry' for='md_entry_item_$j'>$movie</label></td>";
-			echo "<td><select id='md_entry_item_$j' name='md_entry_item_$j' value=''>";
+			echo "<td>$<select id='md_entry_item_$j' name='md_entry_item_$j' class='md_entry_item' value=''>";
 			echo ListPrices();
 			echo "</select></td></tr>\n";
 			$j++;
@@ -73,7 +77,8 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 		?>
 		</table>
         </div><br>
-        <input type="submit" id="md_entry_submit" name="md_entry_submit" value="Submit"><br>
+        <div id="md_entry_total"><strong>Your current total: $<span id="md_entry_total_val">0</span></strong></div><br>
+        <input type="submit" id="md_entry_submit" name="md_entry_submit" value="Submit your bids" disabled><br>
     </form>
 </div>
 
