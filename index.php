@@ -34,6 +34,36 @@ $movies = array("Carrie",
 				);
 sort($movies); // Sort them alphabetically. When we move to a database table, we can have the SQL query do this for us.
 
+/* FORM PROCESSING */
+
+// There are two ways to submit an HTML form, POST and GET. POST sends the data behind-the-scenes,
+// GET sends the data through the URL. (If you see a URL that looks like
+// http://www.example.com/index.php?id=12345&text=Hello%20world!
+// that's a GET request; everything after the ? is GET data.)
+// GET is inherently insecure (because anyone can just load the page with corrupt data in the URL),
+// so we prefer POST unless we're not storing the data in a dataset table or displaying it directly.
+if($_POST) { // If we haven't received POST data, this variable is false. The GET equivalent is $_GET.
+	// I can get away with this right now because the list of movies is static. When we have a more
+	// general page, we'll need better code here.
+	$movie0 = intval($_POST['md_entry_item_0']); // intval() makes sure that we're only getting a number.
+	$movie1 = intval($_POST['md_entry_item_1']);
+	$movie2 = intval($_POST['md_entry_item_2']);
+	$movie3 = intval($_POST['md_entry_item_3']);
+	$movie4 = intval($_POST['md_entry_item_4']);
+	$movie5 = intval($_POST['md_entry_item_5']);
+	$movie6 = intval($_POST['md_entry_item_6']);
+	$movie7 = intval($_POST['md_entry_item_7']);
+	$movie8 = intval($_POST['md_entry_item_8']);
+	$movie9 = intval($_POST['md_entry_item_9']);
+	$name = $_POST['md_entry_name']; 	
+	// Using protection. Stripping out everything after a semicolon protects against SQL injection.
+	$name = preg_replace('/;.*$/','',$name);
+	// htmlentities() changes everything that has an HTML entity code to that code. Use html_entity_decode() to get back.
+	// intval() and htmlentities() insulate us from insertion attacks. Someone could POST to this page with corrupt
+	// or malicious values for the POST variables, or put 
+	
+}
+
 ?>
 
 <!DOCTYPE HTML>
