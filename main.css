@@ -14,6 +14,13 @@ strong {
 
 /* IDs */
 
+#md_errors {
+	border: 2px double red;
+	color: red;
+	margin: 10px;
+	padding: 5px;
+}
+
 #md_entry_wrap {
 	margin: 5px;
 }

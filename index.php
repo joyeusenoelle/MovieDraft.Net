@@ -57,6 +57,13 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 
 <body>
 
+<?php if($error != "") { ?>
+<!-- Relay error messages -->
+<div id="md_errors">
+<?php echo $error; ?>
+</div>
+<?php } ?>
+
 <!-- Collect the actual data -->
 <div id="md_entry_wrap">
 	<!-- When a <form>'s action attribute is blank, that means it loads the same page again for processing. -->
