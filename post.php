@@ -67,7 +67,7 @@ if($_POST) { // If we haven't received POST data, this variable is false. The GE
 		$error .= "Could not get data from table! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
 	}
 	
-	$sc->close();
+	$sc->close();	
 }
 
 

@@ -87,7 +87,7 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 		</table>
         </div><br>
         <div id="md_entry_total"><strong>Your current total: $<span id="md_entry_total_val">0</span></strong></div><br>
-        <input type="submit" id="md_entry_submit" name="md_entry_submit" value="Submit your bids" disabled><br>
+        <input type="submit" id="md_entry_submit" name="md_entry_submit" value="Submit your bids"><br>
     </form>
 </div>
 

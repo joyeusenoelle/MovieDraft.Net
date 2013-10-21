@@ -17,9 +17,7 @@ $(document).ready(function() {
 	// This is what happens when someone changes the value of one of the buy-in <select> elements. This should
 	// disable the Submit button unless the total value of their buy-ins is above $0 and below $18.
 	// 
-	var previous = 0;
-	$('.md_entry_item').focus(function(){previous = $(this).val();} // Grabbing the current value
-	).change(function() {
+	$('.md_entry').submit(function(event) {
 //		alert("changed");  // purely diagnostic
 		// These are inclusive; you can bid [minval] but not below, and you can bid [maxval] but not above.
 		// To set a specific amount that the player MUST bid, set minval and maxval to the same value.
@@ -36,10 +34,10 @@ $(document).ready(function() {
 		// Now check totalval against minval and maxval
 		// Both conditions must succeed for this to go off properly
 		if(totalval >= minval && totalval <= maxval) {
-			$('#md_entry_submit').attr('disabled','false'); // Re-enable the submit button
+			return; // Submit the form
 		} else { // If at least one of the conditions in the if() failed
-			$('#md_entry_submit').attr('disabled','disabled'); // Disable the submit button
-			// We disable the button first because if there's an error in the code below, it'll stop but 
+			event.preventDefault(); // Prevent the form from submitting
+			// We stop submission first because if there's an error in the code below, it'll stop but 
 			// won't invalidate anything above it. So this way at least they can't submit on a bad value.
 			// Display different errors depending on which condition failed
 			if(totalval < minval) { // If the bid isn't high enough
