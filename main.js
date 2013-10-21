@@ -14,15 +14,14 @@
 
 $(document).ready(function() {
 
+	//$('.md_entry_submit').attr("disabled","disabled");
+
 	// This is what happens when someone submits the form. The form should refuse to process unless there's
 	// a name entered and unless the total bid is between <minval> and <maxval> (default 18, set below).
 
-
-});
-
-	$('.md_entry').submit(function(event) {
-		alert("changed");  // purely diagnostic
-		return false; event.preventDefault();// also diagnostic
+	$('#md_entry_submit').click(function(event) {
+		//alert("changed");  // purely diagnostic
+		//return false; event.preventDefault();// also diagnostic
 		// These are inclusive; you can bid [minval] but not below, and you can bid [maxval] but not above.
 		// To set a specific amount that the player MUST bid, set minval and maxval to the same value.
 		var minval = 1; // Change this to change the minimum total buy-in value
@@ -45,13 +44,17 @@ $(document).ready(function() {
 			// won't invalidate anything above it. So this way at least they can't submit on a bad value.
 			// Display different errors depending on which condition failed
 			if(totalval < minval) { // If the bid isn't high enough
-				alert("You must bid at least $" + minval + ".");
+				alert("You must bid at least $" + minval + ".\nYour current bid is $" + totalval + ".");
 				$(this).val(previous).change(); // Set the value back to what it was before the change
 			} else { // Only one other option - if the bid is too high
-				alert("You may bid a maximum of $" + maxval + ".");
+				alert("You may bid a total maximum of $" + maxval + ".\nYour current total is $" + totalval + ".");
 				$(this).val(previous).change(); // Set the value back to what it was before the change
 			}
 			return false; // if we return false, the <select> will refuse the change!
 		}
 		return true; // We can safely exit at this point without returning, but just in case, let's be explicit
 	});
+	
+	
+
+});

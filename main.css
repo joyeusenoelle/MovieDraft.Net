@@ -18,6 +18,15 @@ strong {
 	border: 2px double red;
 	color: red;
 	margin: 10px;
+	max-width: 30%;
+	padding: 5px;
+}
+
+#md_success {
+	border: 2px double green;
+	color: green;
+	margin: 10px;
+	max-width: 30%;
 	padding: 5px;
 }
 

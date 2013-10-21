@@ -3,6 +3,7 @@
 /* FORM PROCESSING */
 
 $error = ""; // Setting up to throw errors.
+$success = ""; // Setting up to relay successes.
 
 // There are two ways to submit an HTML form, POST and GET. POST sends the data behind-the-scenes,
 // GET sends the data through the URL. (If you see a URL that looks like
@@ -33,41 +34,45 @@ if($_POST) { // If we haven't received POST data, this variable is false. The GE
 	// or malicious values for the POST variables, or put the data straight into the name field and submit it. 
 	$name = htmlentities($name);
 	
-	// Now our data should be safe to store in the database table.
-	// First, set up the connection parameters.
-	// TO DO: Get these values!
-	$sql_host = "127.0.0.1";
-	$sql_user = "root";
-	$sql_pass = "g3licht3n";
-	$sql_db   = "moviedraft";
-	
-	// The MySQLi functions are discussed here: http://www.php.net/manual/en/book.mysqli.php
-	$sc = new mysqli($sql_host, $sql_user, $sql_pass, $sql_db); // Create a new connection
-	if($sc->connect_errno) {
-		$error .= "Could not connect to database! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
-	}
-	
-	// Database table structure is as follows:
-	// Columns are id, name, movie0 through movie9.
-	// Rows are per user. 
-	// Right now, we're going to set the data and then retrieve it so that we know it's stored.
-	// We're not doing a sanity check on names right now, but we could if we wanted to.
-	// This means that two people can have the same name. Not optimal, but we'll live.
-	if(!$sc->query("INSERT INTO fall2013 (name, movie0, movie1, movie2, movie3, movie4, movie5, movie6, movie7, movie8, movie9) VALUES ($name, $movie0, $movie1, $movie2, $movie3, $movie4, $movie5, $movie6, $movie7, $movie8, $movie9)")) {
-		$error .= "Could not insert new data! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
-	}
-	
-	// We don't have a way to tell what the ID is, and names aren't unique, but we can be clever with SQL.
-	// Get everything from the fall2013 table. Sort the results by the "id" column (which auto-increments
-	// with every new row inserted), and sort them backwards so the largest ID comes in first. Then only
-	// pull one record.
-	if($res = $sc->query("SELECT * FROM fall2013 ORDER BY id DESC LIMIT 1")) {
-		$row = $res->fetch_assoc();
+	// If the user hasn't submitted a name, we don't store their data.
+	if($name == "") {
+		$error .= "No name submitted!";
+		return false;
 	} else {
-		$error .= "Could not get data from table! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
+		// Now our data should be safe to store in the database table.
+		// First, set up the connection parameters.
+		// TO DO: Get these values!
+		require('sql.php'); // We're storing the SQL login info externally just for an added layer of obfuscation.
+				
+		// The MySQLi functions are discussed here: http://www.php.net/manual/en/book.mysqli.php
+		$sc = new mysqli($sql_host, $sql_user, $sql_pass, $sql_db); // Create a new connection
+		if($sc->connect_errno) {
+			$error .= "Could not connect to database! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
+		}
+		
+		// Database table structure is as follows:
+		// Columns are id, name, movie0 through movie9.
+		// Rows are per user. 
+		// Right now, we're going to set the data and then retrieve it so that we know it's stored.
+		// We're not doing a sanity check on names right now, but we could if we wanted to.
+		// This means that two people can have the same name. Not optimal, but we'll live.
+		if(!$sc->query("INSERT INTO fall2013 (name, movie0, movie1, movie2, movie3, movie4, movie5, movie6, movie7, movie8, movie9) VALUES ('$name', $movie0, $movie1, $movie2, $movie3, $movie4, $movie5, $movie6, $movie7, $movie8, $movie9)")) {
+			$error .= "Could not insert new data! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
+		}
+		
+		// We don't have a way to tell what the ID is, and names aren't unique, but we can be clever with SQL.
+		// Get everything from the fall2013 table. Sort the results by the "id" column (which auto-increments
+		// with every new row inserted), and sort them backwards so the largest ID comes in first. Then only
+		// pull one record.
+		if($res = $sc->query("SELECT * FROM fall2013 ORDER BY id DESC LIMIT 1")) {
+			$row = $res->fetch_assoc();
+			$success .= "Successfully submitted your bids, {$row['name']}!";
+		} else {
+			$error .= "Could not get data from table! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
+		}
+		
+		$sc->close();	
 	}
-	
-	$sc->close();	
 }
 
 

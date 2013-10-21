@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* MovieDraft.Net bid viewer CSS */
+/* We try to keep selectors listed in the order in which they appear on the index page. */
+/* Selectors are also separated into Elements, Classes, and IDs (least to most specific). */
+/* Within a selector, we keep attributes listed in alphabetical order, with sub-attributes grouped together. */
+/* Elements */
+
+
+
+/* Classes */
+
+.hasbid {
+	color: blue;
+	font-weight: bold;
+}
+
+/* IDs */
+
+#md_entries td {
+	padding-right: 5px;	
+}
+
+#md_entries tr:nth-child(even) {
+	background-color: #dfdfdf;
+}

@@ -63,6 +63,12 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 <div id="md_errors">
 <?php echo $error; ?>
 </div>
+<?php }
+if ($success != "") { ?>
+<!-- Relay success messages -->
+<div id="md_success">
+<?php echo $success; ?>
+</div>
 <?php } ?>
 
 <!-- Collect the actual data -->
