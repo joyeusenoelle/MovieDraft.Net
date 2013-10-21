@@ -42,6 +42,7 @@ sort($movies); // Sort them alphabetically. When we move to a database table, we
 <html>
 <head>
 <meta charset="utf-8">
+<!-- Changed 10/21/13 at 11:22 AM EDT -->
 <!-- Reset the CSS state. This makes design easier because it gets rid of many stupid browser quirks. -->
 <link rel="stylesheet" href="reset.css" />
 <!-- This is our main CSS file. Kept external so that if we want to just change the design, we don't have to re-upload the whole page. -->

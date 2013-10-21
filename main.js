@@ -14,11 +14,15 @@
 
 $(document).ready(function() {
 
-	// This is what happens when someone changes the value of one of the buy-in <select> elements. This should
-	// disable the Submit button unless the total value of their buy-ins is above $0 and below $18.
-	// 
+	// This is what happens when someone submits the form. The form should refuse to process unless there's
+	// a name entered and unless the total bid is between <minval> and <maxval> (default 18, set below).
+
+
+});
+
 	$('.md_entry').submit(function(event) {
-//		alert("changed");  // purely diagnostic
+		alert("changed");  // purely diagnostic
+		return false; event.preventDefault();// also diagnostic
 		// These are inclusive; you can bid [minval] but not below, and you can bid [maxval] but not above.
 		// To set a specific amount that the player MUST bid, set minval and maxval to the same value.
 		var minval = 1; // Change this to change the minimum total buy-in value
@@ -51,6 +55,3 @@ $(document).ready(function() {
 		}
 		return true; // We can safely exit at this point without returning, but just in case, let's be explicit
 	});
-
-});
-
