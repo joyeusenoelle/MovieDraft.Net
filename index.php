@@ -1,5 +1,8 @@
 <?php 
 
+/* ARE WE TESTING? */
+$testing = false;
+
 /* UTILITY FUNCTIONS */
 function ListPrices() {
 	$outtxt = ""; // Initialize the string

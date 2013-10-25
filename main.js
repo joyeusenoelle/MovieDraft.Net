@@ -6,6 +6,16 @@
 // tag, $('.bold') is any tag with "bold" in its classes, and $('#specific-bold-item') is the tag with the
 // specific ID "specific-bold-item". Remember that you can only have one element with a given ID on any page.
 
+// First, let's set up the comparison function. It's important to separate this out for testing purposes.
+// Also, it makes the code cleaner.
+
+function checkBid(curb,minb,maxb) {
+	var ok = 0; // Default value: everything is okay.
+	if(curb > maxb) ok = 1; // value of 1 means that the user's spent too much
+	if(curb < minb) ok = -1; // value of -1 means that the user's spent too little
+	return ok;	// ok can be one of three values: 1, 0, and -1. Each one tells us something about the result of the comparison.
+}
+
 // $(document).ready(); is jQuery's replacement for the onLoad attribute in the <body> tag. It loads once 
 // everything in the document has been parsed. It's important to remember that nothing in here will take effect
 // until the page is done loading; if someone interacts with the page before it's done loading, nothing in here 
@@ -36,14 +46,15 @@ $(document).ready(function() {
 //		alert(totalval); // purely diagnostic, comment this out once the rest of the code is working right
 		// Now check totalval against minval and maxval
 		// Both conditions must succeed for this to go off properly
-		if(totalval >= minval && totalval <= maxval) {
+		var ok = checkBid(totalval,minval,maxval); // Check against our custom function.
+		if(ok == 0) {
 			return; // Submit the form
 		} else { // If at least one of the conditions in the if() failed
 			event.preventDefault(); // Prevent the form from submitting
 			// We stop submission first because if there's an error in the code below, it'll stop but 
 			// won't invalidate anything above it. So this way at least they can't submit on a bad value.
 			// Display different errors depending on which condition failed
-			if(totalval < minval) { // If the bid isn't high enough
+			if(ok == -1) { // If the bid isn't high enough
 				alert("You must bid at least $" + minval + ".\nYour current bid is $" + totalval + ".");
 				$(this).val(previous).change(); // Set the value back to what it was before the change
 			} else { // Only one other option - if the bid is too high
@@ -52,7 +63,8 @@ $(document).ready(function() {
 			}
 			return false; // if we return false, the <select> will refuse the change!
 		}
-		return true; // We can safely exit at this point without returning, but just in case, let's be explicit
+		return true; // We can safely exit at this point without returning, since both forks of the first if() 
+					 // have a return, but just in case, let's be explicit
 	});
 	
 	
