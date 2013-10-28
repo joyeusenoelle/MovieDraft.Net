@@ -73,6 +73,18 @@ if ($success != "") { ?>
 <?php echo $success; ?>
 </div>
 <?php } ?>
+<!-- There are two ways we could have done this. The first is as you see above; the second is to 
+	 keep everything inside the PHP tags and use "echo" to get the HTML out onto the page. I chose
+     the first method for a fairly simple reason: it's fewer characters and less PHP. Less PHP
+     means less processing by the preprocessor, and fewer characters means a smaller filesize, both
+     of which mean faster load times for the page. In this case it's minuscule, but it's possible 
+     to get into hundreds or thousands of lines of HTML output, or have the same page hit by tens
+     or hundreds of thousands of users at once, and that's when file size and processor time become
+     particularly important. Best to establish the habit early.
+     
+     Of course, I've negated any filesize benefit with this two-paragraph comment, but the principle remains.
+-->
+
 
 <!-- Collect the actual data -->
 <div id="md_entry_wrap">
