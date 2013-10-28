@@ -75,8 +75,7 @@ if(@!$res = $sc->query("SELECT * FROM fall13titles ORDER BY id ASC")) { // Get a
 </head>
 
 <body>
-<?php if(isset($movies)) { print_r($movies); } if(isset($lastkey)) echo $lastkey;?>
-<br>
+<?php //if(isset($movies)) { print_r($movies); } if(isset($lastkey)) echo $lastkey;?>
 <?php if ($error != "") { ?>
 <div id="md_errors">
 <?php echo preg_replace('/\n/','<br>\n',$error); ?>
