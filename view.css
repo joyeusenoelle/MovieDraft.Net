@@ -5,7 +5,10 @@
 /* Within a selector, we keep attributes listed in alphabetical order, with sub-attributes grouped together. */
 /* Elements */
 
-
+th {
+	min-width: 100px;
+	width: 100px;
+}
 
 /* Classes */
 
@@ -17,6 +20,7 @@
 /* IDs */
 
 #md_entries td {
+	min-width: 100px;
 	padding-right: 5px;	
 }
 

@@ -2,15 +2,19 @@
 
 require('sql.php');  // We're storing the SQL login info externally just for an added layer of obfuscation.
 
-	$sc = new mysqli($sql_host, $sql_user, $sql_pass, $sql_db); // Create a new connection
+	@$sc = new mysqli($sql_host, $sql_user, $sql_pass, $sql_db); // Create a new connection
 	if($sc->connect_errno) {
 		$error .= "Could not connect to database! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
 	}
 
-	if(!$res = $sc->query("SELECT * FROM fall2013 ORDER BY id ASC")) { // Get all the rows, order by ID so they're chronological
+	if(@!$res = $sc->query("SELECT * FROM fall2013 ORDER BY id ASC")) { // Get all the rows, order by ID so they're chronological
 		$error .= "Could not get data from table! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
 	}
-	
+
+	if(@!$gs = $sc->query("SELECT * FROM fall13titles ORDER BY id ASC")) {
+		$error .= "Could not get data from table! Error " . $sc->connect_errno . ": " . $sc->connect_error . "<br>";
+	}
+			
 
 $movies = array("Carrie",	
 				"Jackass",
@@ -37,8 +41,8 @@ sort($movies);
 <body>
 <table id="md_entries">
 <tr><th>Participant</th>
-<?php foreach($movies as $movie) { // Iterate through the movies, create header listings for the table
-	echo "<th>$movie</th>";
+<?php while($grw = $gs->fetch_assoc()) {
+	echo "<th>" . preg_replace('/:.*$/','',$grw['name']) . "<br>($" . $grw['bid'] . ")</th>";	
 }?>
 </tr>
 <?php
@@ -49,7 +53,8 @@ sort($movies);
 			echo "<td";
 			$mnum = "movie$i"; // movie0, movie1, etc. Yes, we can do this. Pretty cool, huh?
 			if($row[$mnum] > 0) { echo " class='hasbid'"; } // If there's a nonzero bid, make the number stand out so it's easy to see
-			echo ">$" . $row[$mnum];
+			echo ">";
+			echo $row[$mnum] == 1 ? "BID" : "no"; // Ternary operator! boolean condition ? do this if true : do this if false;
 			echo "</td>";
 		}
 		echo "</tr>";

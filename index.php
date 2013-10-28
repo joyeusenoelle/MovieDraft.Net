@@ -39,13 +39,6 @@ $movies = array("Carrie",
 				);
 sort($movies); // Sort them alphabetically. When we move to a database table, we can have the SQL query do this for us.
 
-@$gc = new mysqli($sql_host, $sql_user, $sql_pass, $sql_db); // Create a new connection
-if(@$gc->connect_errno) {
-	$error .= "Could not connect to database! Error " . $gc->connect_errno . ": " . $gc->connect_error . "<br>";
-}
-if(@!$gs = $gc->query("SELECT * FROM fall13titles ORDER BY id ASC")) { // Get all the rows, order by ID so they're chronological
-	$error .= "Could not get data from table! Error " . $gc->connect_errno . ": " . $gc->connect_error . "<br>";
-}
 
 
 ?>
@@ -69,7 +62,6 @@ if(@!$gs = $gc->query("SELECT * FROM fall13titles ORDER BY id ASC")) { // Get al
 </head>
 
 <body>
-
 <?php if($error != "") { ?>
 <!-- Relay error messages -->
 <div id="md_errors">
@@ -107,31 +99,22 @@ if ($success != "") { ?>
         <table name="md_entry_item_table" id="md_entry_item_table">
         <tr><th>Movie</th><th>Price</th><th>Select</th></tr>
     	<?php
-if($res) {
+if(isset($gs)) {
 	while($row = $gs->fetch_assoc()) { // Notice how we're operating on the $res return object rather than the $sc mysqli object
 		echo "<tr>\n\t<td>";
 		echo "\n\t\t" . $row['name'];
+		echo "<input type='hidden' name='id" . $row['id'] . "' id='id" . $row['id'] . "' value='" . $row['id'] . "' class='ids'>";
 		echo "\n\t</td>\n<td>";
-		echo "\n\t\t" . $row['bid'];
+		echo "\n\t\t$" . $row['bid'];
+		echo "<input type='hidden' name='bid" . $row['id'] . "' id='bid" . $row['id'] . "' value='" . $row['bid'] . "' class='values'>";
 		echo "\n\t</td>\n<td>";
-		echo "\n\t\t<input type='check' name='movie" . $row['id'] . "' id='movie" . $row['id'] . "yes' value='1'>";
+		echo "\n\t\t<input type='checkbox' name='movie" . $row['id'] . "' id='movie" . $row['id'] . "yes' value='1' class='bids'>";
 		echo "\n</tr>\n";
-		$next = 1 + $row['id'];
+		$last = $row['id'];
 	}
+		echo "\n<input type='hidden' name='lastid' value='$last'>\n";
 }
- 
-		while ($row = $gs->fetch_assoc()) { ?>
-			
-		<?php }
-		$j = 0;
-		foreach($movies as $movie) {
-			echo "<tr><td><label form='md_entry' for='md_entry_item_$j'>$movie</label></td>";
-			echo "<td>$<select id='md_entry_item_$j' name='md_entry_item_$j' class='md_entry_item' value=''>";
-			echo ListPrices();
-			echo "</select></td></tr>\n";
-			$j++;
-		}
-		?>
+?>
 		</table>
         </div><br>
         <div id="md_entry_total"><strong>Your current total: $<span id="md_entry_total_val">0</span></strong></div><br>
@@ -143,5 +126,5 @@ if($res) {
 </html>
 
 <?php
-
+$sc->close();	
 ?>

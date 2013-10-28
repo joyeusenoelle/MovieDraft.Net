@@ -19,10 +19,10 @@ if($_POST) {
 	foreach($_POST as $key=>$value) {
 		if(substr($key,0,5) == "movie") {
 			$lastkey = $id = intval(substr($key,5));
-			$movies[$id]['name'] = $value;
+			$movies[$id]['name'] = htmlentities(preg_replace('/;.*$/','',$value));
 		} elseif(substr($key,0,3) == "bid") {
 			$lastkey = $id = intval(substr($key,3));
-			$movies[$id]['bid'] = $value ? $value : 0;
+			$movies[$id]['bid'] = $value ? intval($value) : 0;
 		}
 	}
 	// Why not use sizeof() in this for loop? Because of the way MySQL handles auto-incremented primary keys.
@@ -95,9 +95,9 @@ if(@!$res = $sc->query("SELECT * FROM fall13titles ORDER BY id ASC")) { // Get a
 if($res) {
 	while($row = $res->fetch_assoc()) { // Notice how we're operating on the $res return object rather than the $sc mysqli object
 		echo "<tr>\n\t<td>";
-		echo "\n\t\t<input type='text' name='movie" . $row['id'] . "' id='movie" . $row['id'] . "' value='" . $row['name'] . "'>";
+		echo "\n\t\t<input type='text' size='40' name='movie" . $row['id'] . "' id='movie" . $row['id'] . "' value=\"" . html_entity_decode($row['name']) . "\">";
 		echo "\n\t</td>\n<td>";
-		echo "\n\t\t<input type='text' name='bid" . $row['id'] . "' id='bid" . $row['id'] . "' value='" . $row['bid'] . "'>";
+		echo "\n\t\t$<input type='text' size='4' name='bid" . $row['id'] . "' id='bid" . $row['id'] . "' value='" . html_entity_decode($row['bid']) . "'>";
 		echo "\n\t</td>\n</tr>\n";
 		$next = 1 + $row['id'];
 
@@ -111,10 +111,10 @@ if($res) {
 ?>
 <tr>
 	<td>
-    	<input type="text" name="movie<?php echo $next; ?>" id="movie<?php echo $next; ?>">
+    	<input type="text" size='40' name="movie<?php echo $next; ?>" id="movie<?php echo $next; ?>">
     </td>
     <td>
-    	<input type="text" name="bid<?php echo $next; ?>" id="bid<?php echo $next; ?>">
+    	<input type="text" size='4' name="bid<?php echo $next; ?>" id="bid<?php echo $next; ?>">
     </td>
 </tr>
 </table>
